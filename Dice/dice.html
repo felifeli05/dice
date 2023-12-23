@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice</title>
+  <style>
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+     th, td {
+      border: 1px solid black;
+      padding: 8px;
+    text-align: center;
+    background-color: powderblue;
+    }
+
+   th {
+    background-color: deepskyblue; 
+    color: black; 
+  }
+  </style>
+  <script>
+    var dieImages = [];
+    var frequencies = [0, 0, 0, 0, 0, 0];
+
+    function start() {
+      var button = document.getElementById("rollButton");
+      button.addEventListener("click", rollDice);
+
+      for (var i = 1; i <= 12; i++) {
+        dieImages.push(document.getElementById("die" + i));
+      }
+
+      for (var i = 0; i < frequencies.length; i++) {
+        frequencies[i] = 0;
+      }
+    }
+
+    function rollDice() {
+      for (var i = 0; i < dieImages.length; i++) {
+        setImage(dieImages[i]);
+      }
+
+      updatePossibilityTable();
+    }
+
+    function setImage(dieImg) {
+      var dieValue = Math.floor(1 + Math.random() * 6);
+      dieImg.setAttribute("src", "die" + dieValue + ".png");
+    }
+
+    function updatePossibilityTable() {
+      for (var i = 0; i < dieImages.length; i++) {
+        var dieValue = getDieValue(dieImages[i]);
+        frequencies[dieValue - 1]++;
+      }
+
+      for (var i = 0; i < frequencies.length; i++) {
+        var possibility = (frequencies[i] / 12) * 100;
+        document.getElementById("frequency" + (i + 1)).textContent = frequencies[i].toString();
+        document.getElementById("possibility" + (i + 1)).textContent = possibility.toFixed(2) + "%";
+      }
+    }
+
+    function getDieValue(dieImg) {
+      return parseInt(dieImg.src.charAt(dieImg.src.length - 5));
+    }
+
+    window.addEventListener("load", start, false);
+  </script>
+</head>
+<body>
+  <form action="#">
+    <input id="rollButton" type="button" value="Roll Dice">
+  </form>
+
+  <div id="diceContainer"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Face</th>
+        <th>Frequency</th>
+        <th>Percent</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>1</td>
+        <td id="frequency1">0</td>
+        <td id="possibility1">0.00%</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td id="frequency2">0</td>
+        <td id="possibility2">0.00%</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td id="frequency3">0</td>
+        <td id="possibility3">0.00%</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td id="frequency4">0</td>
+        <td id="possibility4">0.00%</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td id="frequency5">0</td>
+        <td id="possibility5">0.00%</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td id="frequency6">0</td>
+        <td id="possibility6">0.00%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    var diceContainer = document.getElementById("diceContainer");
+    for (var i = 1; i <= 12; i++) {
+      var diceImage = document.createElement("img");
+      diceImage.id = "die" + i;
+      diceImage.src = "die1.png";
+      diceContainer.appendChild(diceImage);
+
+      if (i % 6 === 0) {
+        diceContainer.appendChild(document.createElement("br"));
+      }
+    }
+  </script>
+</body>
+</html>
